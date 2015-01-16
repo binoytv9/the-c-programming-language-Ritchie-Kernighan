@@ -16,13 +16,13 @@ main()
 void minprintf(char *fmt,...)
 {
 	int ival;
-	va_list ap;
+	va_list ap;	// argument pointer - refer to each argument in turn
 	double dval;
 	int wid,pre;
 	char *p,*sval;
 	char arr[10],*arrp;
 
-	va_start(ap,fmt);
+	va_start(ap,fmt);	// initialising ap to point to first unnamed argument
 
 	for(p = fmt;*p;++p){
 		if(*p != '%'){
