@@ -1,43 +1,39 @@
 #include<stdio.h>
 #include<stdarg.h>
+#include<stdlib.h>
 
 void minprintf(char *fmt,...);
 
 main()
 {
-	char fmt[]="int %ld d %5.2f s %.4s";
+	char fmt[] = "int %ld d %5.2lf s %.4s";
 
 	printf("\n\n"); 
 	minprintf(fmt,10,15.7,"string");
 	printf("\n\n"); 
-
-/*	printf("int %.3d d %5.2f s %.4s",10,15.7,"string");
-	printf("\n\n"); 
-*/
 }
-
 
 void minprintf(char *fmt,...)
 {
-	int wid,pre;
-	va_list ap;
-	char arr[50],*arrp;
-	char *p,*sval;
 	int ival;
+	va_list ap;
 	double dval;
+	int wid,pre;
+	char *p,*sval;
+	char arr[10],*arrp;
 
 	va_start(ap,fmt);
 
-	for(p=fmt;*p;++p){
+	for(p = fmt;*p;++p){
 		if(*p != '%'){
 			putchar(*p);
 			continue;
 		}
 
-		wid=0;
-		pre=-1;
+		wid = 0;
+		pre = -1;
 
-		arrp=arr;
+		arrp = arr;
 		if(*++p == '-'){
 			*arrp++ = '-';
 			++p;
@@ -45,61 +41,143 @@ void minprintf(char *fmt,...)
 
 		while(isdigit(*p))
 			*arrp++ = *p++;
-		*arrp='\0';
-		wid=atoi(arr);
+		*arrp = '\0';
+		wid = atoi(arr);			// minimum field width
 
-		arrp=arr;
-		if(*p++ == '.'){
-			while(isdigit(*p))
-				*arrp++ = *p++;
-			*arrp='\0';
-			pre=atoi(arr);
+		arrp = arr;
+		if(*p == '.'){
+			while(isdigit(*++p))
+				*arrp++ = *p;
+			*arrp = '\0';
+				pre = atoi(arr);	// precision field
 		}	
-		else
-			--p;	
 
 		switch(*p){
 			case 'u':
-				ival=va_arg(ap,int);
+				ival = va_arg(ap,int);
 				printf("%*.*u",wid,pre,ival);
 				break;
 			case 'X':
 			case 'x':
-				ival=va_arg(ap,int);
+				ival = va_arg(ap,int);
 				printf("%*.*x",wid,pre,ival);
 				break;
 			case 'o':
-				ival=va_arg(ap,int);
+				ival = va_arg(ap,int);
 				printf("%*.*o",wid,pre,ival);
 				break;	
 			case 'i':
 			case 'd':
-				ival=va_arg(ap,int);
+				ival = va_arg(ap,int);
 				printf("%*.*d",wid,pre,ival);
 				break;
 			case 'f':
-				dval=va_arg(ap,double);
+				dval = va_arg(ap,double);
 				printf("%*.*f",wid,pre,dval);
 				break;
 			case 'E':
 			case 'e':
-				dval=va_arg(ap,double);
+				dval = va_arg(ap,double);
 				printf("%*.*e",wid,pre,dval);
 				break;
 			case 'G':
 			case 'g':
-				dval=va_arg(ap,double);
+				dval = va_arg(ap,double);
 				printf("%*.*g",wid,pre,dval);
 				break;
 			case 's':
-				sval=va_arg(ap,char *);
+				sval = va_arg(ap,char *);
 				printf("%*.*s",wid,pre,sval);
 				break;
 			case '%':
 				putchar('%');
 				break;
+			case 'l':
+				++p;
+				switch(*p){
+					long ival;
+					case 'u':
+						ival = va_arg(ap,long unsigned int);
+						printf("%*.*lu",wid,pre,ival);
+						break;
+					case 'X':
+					case 'x':
+						ival = va_arg(ap,long int);
+						printf("%*.*lx",wid,pre,ival);
+						break;
+					case 'o':
+						ival = va_arg(ap,long int);
+						printf("%*.*lo",wid,pre,ival);
+						break;	
+					case 'i':
+					case 'd':
+						ival = va_arg(ap,long int);
+						printf("%*.*ld",wid,pre,ival);
+						break;
+					case 'f':
+						dval = va_arg(ap,double);
+						printf("%*.*lf",wid,pre,dval);
+						break;
+					case 'E':
+					case 'e':
+						dval = va_arg(ap,double);
+						printf("%*.*le",wid,pre,dval);
+						break;
+					case 'G':
+					case 'g':
+						dval = va_arg(ap,double);
+						printf("%*.*lg",wid,pre,dval);
+						break;
+					default:
+						printf("\ninvalid conversion character l%c\n\n",*p);
+						exit(-1);
+						break;
+				}
+				break;
+			case 'h':
+				++p;
+				switch(*p){
+					case 'u':
+						ival = va_arg(ap,int);
+						printf("%*.*hu",wid,pre,ival);
+						break;
+					case 'X':
+					case 'x':
+						ival = va_arg(ap,int);
+						printf("%*.*hx",wid,pre,ival);
+						break;
+					case 'o':
+						ival = va_arg(ap,int);
+						printf("%*.*ho",wid,pre,ival);
+						break;	
+					case 'i':
+					case 'd':
+						ival = va_arg(ap,int);
+						printf("%*.*hd",wid,pre,ival);
+						break;
+					case 'f':
+						dval = va_arg(ap,double);
+						printf("%*.*f",wid,pre,dval);
+						break;
+					case 'E':
+					case 'e':
+						dval = va_arg(ap,double);
+						printf("%*.*e",wid,pre,dval);
+						break;
+					case 'G':
+					case 'g':
+						dval = va_arg(ap,double);
+						printf("%*.*g",wid,pre,dval);
+						break;
+					default:
+						printf("\ninvalid conversion character h%c\n\n",*p);
+						exit(-1);
+						break;
+				}
+				break;
 			default:
-				putchar(*p);
+				printf("\ninvalid conversion character %c\n\n",*p);
+				exit(-1);
 				break;
 		}
 	}
