@@ -16,7 +16,7 @@ main()
 	double f;
 	char s[50];
 
-	char fmt[] = "i%d%s %c%f";
+	char fmt[] = "i%o%s %c%f";
 	char input[]="i12113 xyz         a12.34";
 
 	printf("\ninput string\t: \"%s\"",input);
@@ -104,14 +104,17 @@ int minscanf(char input[], char fmt[], ...)
 				return count;
 		}
 
-		int wid = -1;
-		int ignore = 0;
+		wid = -1;
+		ignore = 0;
 
+		/* assignment suppression character indicated by '*' character
+		the input field is skipped no assignment is made */
 		if(*++p == '*'){
 			ignore = 1;
 			++p;
 		}
 
+		/* maximum field width */
 		arrp = arr;
 		while(isdigit(*p))
 			*arrp++ = *p++;
