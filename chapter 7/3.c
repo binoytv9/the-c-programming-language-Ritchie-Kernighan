@@ -167,7 +167,7 @@ void minprintf(char *fmt,...)
 						break;	
 					case 'i':
 						ival = va_arg(ap,int);
-						printf("%*.*i",wid,pre,ival);
+						printf("%*.*hi",wid,pre,ival);
 						break;
 					case 'd':
 						ival = va_arg(ap,int);
