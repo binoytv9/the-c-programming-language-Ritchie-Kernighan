@@ -6,22 +6,26 @@ void minprintf(char *fmt,...);
 
 main()
 {
-	char fmt[] = "int %ld d %5.2lf s %.4s";
+	char fmt[] = "int-[%Ld] float-[%5.2lf] str-[%.4s] char-[%2c]";
 
-	printf("\n\n"); 
-	minprintf(fmt,10,15.7,"string");
+	printf("\noutput from minprintf\n"); 
+	minprintf(fmt,10,15.7,"string",'a');
+
+	printf("\n\noutput from minprintf\n"); 
+	printf(fmt,10,15.7,"string",'a');
 	printf("\n\n"); 
 }
 
 void minprintf(char *fmt,...)
 {
 	int ival;
-	va_list ap;	// argument pointer - refer to each argument in turn
+	char cval;
 	double dval;
 	int wid,pre;
 	char *p,*sval;
 	char arr[10],*arrp;
 
+	va_list ap;		// argument pointer - refer to each argument in turn
 	va_start(ap,fmt);	// initialising ap to point to first unnamed argument
 
 	for(p = fmt;*p;++p){
@@ -67,6 +71,9 @@ void minprintf(char *fmt,...)
 				printf("%*.*o",wid,pre,ival);
 				break;	
 			case 'i':
+				ival = va_arg(ap,int);
+				printf("%*.*i",wid,pre,ival);
+				break;
 			case 'd':
 				ival = va_arg(ap,int);
 				printf("%*.*d",wid,pre,ival);
@@ -85,6 +92,10 @@ void minprintf(char *fmt,...)
 				dval = va_arg(ap,double);
 				printf("%*.*g",wid,pre,dval);
 				break;
+			case 'c':
+				cval = va_arg(ap,int);
+				printf("%*c",wid,cval);
+				break;
 			case 's':
 				sval = va_arg(ap,char *);
 				printf("%*.*s",wid,pre,sval);
@@ -93,6 +104,7 @@ void minprintf(char *fmt,...)
 				putchar('%');
 				break;
 			case 'l':
+			case 'L':
 				++p;
 				switch(*p){
 					long ival;
@@ -110,6 +122,9 @@ void minprintf(char *fmt,...)
 						printf("%*.*lo",wid,pre,ival);
 						break;	
 					case 'i':
+						ival = va_arg(ap,int);
+						printf("%*.*li",wid,pre,ival);
+						break;
 					case 'd':
 						ival = va_arg(ap,long int);
 						printf("%*.*ld",wid,pre,ival);
@@ -130,7 +145,7 @@ void minprintf(char *fmt,...)
 						break;
 					default:
 						printf("\ninvalid conversion character l%c\n\n",*p);
-						exit(-1);
+						return;
 						break;
 				}
 				break;
@@ -151,6 +166,9 @@ void minprintf(char *fmt,...)
 						printf("%*.*ho",wid,pre,ival);
 						break;	
 					case 'i':
+						ival = va_arg(ap,int);
+						printf("%*.*i",wid,pre,ival);
+						break;
 					case 'd':
 						ival = va_arg(ap,int);
 						printf("%*.*hd",wid,pre,ival);
@@ -171,13 +189,13 @@ void minprintf(char *fmt,...)
 						break;
 					default:
 						printf("\ninvalid conversion character h%c\n\n",*p);
-						exit(-1);
+						return;
 						break;
 				}
 				break;
 			default:
 				printf("\ninvalid conversion character %c\n\n",*p);
-				exit(-1);
+				return;
 				break;
 		}
 	}
