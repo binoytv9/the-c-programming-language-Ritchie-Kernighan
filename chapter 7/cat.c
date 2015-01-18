@@ -1,6 +1,5 @@
 /*	program 'cat' which concatenates a set of named files into the standard output	*/
 
-
 #include<stdio.h>
 
 void filecopy(FILE *, FILE *);
