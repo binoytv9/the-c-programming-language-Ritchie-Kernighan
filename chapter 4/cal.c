@@ -1,22 +1,22 @@
 #include<stdio.h>
-#include<stdlib.h>
 #include<ctype.h>
+#include<stdlib.h>
 
 #define MAXOP 100
 #define NUMBER '0'
 #define MAXVAL 100
 #define BUFSIZE 100
 
-int getop(char []);
+int getch(void);
 void push(double);
 double pop (void);
-int getch(void);
 void ungetch(int);
+int getop(char []);
 
 int sp=0;
-double val[MAXVAL];
-char buf[BUFSIZE];
 int bufp=0;
+char buf[BUFSIZE];
+double val[MAXVAL];
 
 main()
 {
@@ -44,13 +44,13 @@ main()
 					if(op2!=0.0)
 						push(pop()/op2);
 					else
-						printf("error:zero divisor\n");
+						printf("error : zero divisor\n");
 					break;
 			case '\n':
 					printf("\t%.8g\n",pop());
 					break;
 			default:
-					printf("error:unknown command %s\n",s);
+					printf("error : unknown command %s\n",s);
 					break;
 		}
 	}
@@ -62,7 +62,7 @@ void push(double f)
 	if(sp<MAXVAL)
 		val[sp++]=f;
 	else
-		printf("error:stack full,can't puush %g\n",f);
+		printf("error : stack full, can't push %g\n",f);
 }
 
 double pop(void)
@@ -70,7 +70,7 @@ double pop(void)
 	if(sp>0)
 		return val[--sp];
 	else{
-		printf("error:stack empty\n");
+		printf("error : stack empty\n");
 		return 0.0;
 	}
 }
@@ -104,10 +104,7 @@ int getch(void)
 void ungetch(int c)
 {
 	if(bufp>=BUFSIZE)
-		printf("ungetch:too many characters\n");
+		printf("ungetch : too many characters\n");
 	else
 		buf[bufp++]=c;
 }
-
-
-
