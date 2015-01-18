@@ -70,10 +70,7 @@ void minprintf(char *fmt,...)
 				ival = va_arg(ap,int);
 				printf("%*.*o",wid,pre,ival);
 				break;	
-			case 'i':
-				ival = va_arg(ap,int);
-				printf("%*.*i",wid,pre,ival);
-				break;
+			case 'i': // %d and %i same for printf, different only in scanf
 			case 'd':
 				ival = va_arg(ap,int);
 				printf("%*.*d",wid,pre,ival);
@@ -122,9 +119,6 @@ void minprintf(char *fmt,...)
 						printf("%*.*lo",wid,pre,ival);
 						break;	
 					case 'i':
-						ival = va_arg(ap,int);
-						printf("%*.*li",wid,pre,ival);
-						break;
 					case 'd':
 						ival = va_arg(ap,long int);
 						printf("%*.*ld",wid,pre,ival);
@@ -166,9 +160,6 @@ void minprintf(char *fmt,...)
 						printf("%*.*ho",wid,pre,ival);
 						break;	
 					case 'i':
-						ival = va_arg(ap,int);
-						printf("%*.*hi",wid,pre,ival);
-						break;
 					case 'd':
 						ival = va_arg(ap,int);
 						printf("%*.*hd",wid,pre,ival);
